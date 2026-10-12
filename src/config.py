@@ -35,10 +35,16 @@ class BotSettings(BaseModel):
     )
 
 
+class RedisSettings(BaseModel):
+    url: SecretStr = SecretStr("redis://localhost:6379/0")
+    jobstore_url: SecretStr = SecretStr("redis://localhost:6379/1")
+
+
 class Config(BaseSettings):
     root_dir: Path = Path(__file__).parent.parent.resolve()
     logging_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     db: DBSettings = DBSettings()
+    redis: RedisSettings = RedisSettings()
     bot: BotSettings = BotSettings()
     model_config = SettingsConfigDict(
         env_file=f"{root_dir}/.env",
